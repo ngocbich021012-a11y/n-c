@@ -29,7 +29,7 @@
             flex-direction: row;
             align-items: flex-start;
             gap: 30px;
-            max-width: 1100px;
+            max-width: 1200px;
             width: 100%;
             background: white;
             padding: 30px;
@@ -37,7 +37,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             box-sizing: border-box;
         }
-        @media (max-width: 900px) {
+        @media (max-width: 950px) {
             .container {
                 flex-direction: column;
                 align-items: center;
@@ -172,17 +172,17 @@
         }
         .reset-btn:hover { background: #cbd5e1; transform: none; box-shadow: none;}
 
-        /* Cột bên phải: Gồm Đếm ngày thương & Nhật ký */
+        /* Cột bên phải: Gồm Đếm ngày thương, Bản đồ & Nhật ký */
         .right-panel {
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
             flex: 1.5;
             width: 100%;
             border-left: 2px dashed #e2e8f0;
             padding-left: 30px;
         }
-        @media (max-width: 900px) {
+        @media (max-width: 950px) {
             .right-panel {
                 border-left: none;
                 border-top: 2px dashed #e2e8f0;
@@ -194,16 +194,16 @@
         /* Khối Đếm Thời Gian Bên Nhau */
         .love-counter-box {
             background: #f8fafc;
-            padding: 20px;
+            padding: 15px;
             border-radius: 16px;
             border: 1px solid #e2e8f0;
             text-align: center;
         }
         .love-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             color: #e53e3e;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -212,55 +212,82 @@
         .time-display {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin-top: 10px;
+            gap: 10px;
+            margin-top: 8px;
         }
         .time-unit {
             background: white;
-            padding: 10px 14px;
+            padding: 8px 12px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
             min-width: 65px;
         }
         .time-num {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             color: #2d3748;
             display: block;
         }
-        .time-label {
-            font-size: 11px;
-            color: #a0aec0;
+        .time-label { font-size: 11px; color: #a0aec0; }
+        .date-picker-btn { margin-top: 10px; font-size: 11px; padding: 4px 10px; background: #edf2f7; color: #718096; border-radius: 4px; }
+
+        /* Khối Bản đồ khoảng cách */
+        .map-box {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-        .date-picker-btn {
-            margin-top: 12px;
-            font-size: 11px;
-            padding: 4px 10px;
+        .map-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #3182ce;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .map-container {
+            width: 100%;
+            height: 180px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #cbd5e1;
             background: #edf2f7;
-            color: #718096;
-            border-radius: 4px;
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .distance-km-box {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            font-weight: bold;
+            font-size: 14px;
+            color: #2b6cb0;
         }
 
         /* Khối Nhật ký */
         .history-box {
             display: flex;
             flex-direction: column;
-            max-height: 260px;
+            max-height: 200px;
         }
         .history-title {
             font-size: 15px;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #4a5568;
             display: flex;
             justify-content: space-between;
         }
-        .history-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            overflow-y: auto;
-        }
+        .history-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; }
         .history-list::-webkit-scrollbar { width: 5px; }
         .history-list::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
         
@@ -274,13 +301,7 @@
             gap: 4px;
             border-left: 4px solid #ff9a9e;
         }
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            font-weight: 600;
-        }
+        .history-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; }
         .history-time { color: #94a3b8; font-size: 11px; font-weight: normal; }
         .history-note {
             color: #64748b; font-size: 13px; font-style: italic; word-break: break-word;
@@ -313,14 +334,23 @@
     <div class="right-panel">
         <div class="love-counter-box">
             <div class="love-title">❤️ Thời Gian Bên Nhau ❤️</div>
-            <div id="startDayLabel" style="font-size: 12px; color: #718096;">(Chưa cài đặt ngày gặp)</div>
+            <div id="startDayLabel" style="font-size: 11px; color: #718096;">(Chưa cài đặt ngày gặp)</div>
             
             <div class="time-display">
                 <div class="time-unit"><span class="time-num" id="d-days">0</span><span class="time-label">Ngày</span></div>
                 <div class="time-unit"><span class="time-num" id="d-hours">0</span><span class="time-label">Giờ</span></div>
                 <div class="time-unit"><span class="time-num" id="d-minutes">0</span><span class="time-label">Phút</span></div>
             </div>
-            <button class="reset-btn date-picker-btn" onclick="setStartDate()">Cài đặt ngày gặp nhau</button>
+            <button class="reset-btn date-picker-btn" onclick="setStartDate()">Cài đặt ngày gặp</button>
+        </div>
+
+        <div class="map-box">
+            <div class="map-title">📍 Khoảng Cách Địa Lý</div>
+            <div class="map-container" id="mapContainer">
+                <div style="text-align: center; padding-top: 70px; color: #a0aec0; font-size: 13px;">Chưa cài đặt địa chỉ</div>
+            </div>
+            <div class="distance-km-box" id="distanceKmLabel">Khoảng cách: -- km</div>
+            <button class="reset-btn date-picker-btn" style="margin-top:0;" onclick="setLocations()">Cài đặt vị trí 2 người</button>
         </div>
 
         <div class="history-box">
@@ -337,6 +367,10 @@
     let count = localStorage.getItem('sadDrops') ? parseInt(localStorage.getItem('sadDrops')) : 0;
     let historyData = localStorage.getItem('sadHistory') ? JSON.parse(localStorage.getItem('sadHistory')) : [];
     let startDateStr = localStorage.getItem('loveStartDate') || ""; 
+    
+    // Khởi tạo biến lưu địa chỉ
+    let myLoc = localStorage.getItem('myLocation') || "";
+    let loverLoc = localStorage.getItem('loverLocation') || "";
 
     const waterElement = document.getElementById('water');
     const countDisplay = document.getElementById('countDisplay');
@@ -349,6 +383,9 @@
     const dHours = document.getElementById('d-hours');
     const dMinutes = document.getElementById('d-minutes');
     const startDayLabel = document.getElementById('startDayLabel');
+
+    const mapContainer = document.getElementById('mapContainer');
+    const distanceKmLabel = document.getElementById('distanceKmLabel');
 
     function playDropSound() {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -367,13 +404,11 @@
         osc.stop(ctx.currentTime + 0.12);
     }
 
-    // Hàm đếm thời gian chi tiết: Ngày, Giờ, Phút
     function updateLoveCounter() {
         if (!startDateStr) {
             startDayLabel.innerText = "Bấm nút phía dưới để cài đặt ngày";
             return;
         }
-
         const start = new Date(startDateStr + "T00:00:00");
         const now = new Date();
         const diff = now - start;
@@ -383,14 +418,11 @@
             dDays.innerText = 0; dHours.innerText = 0; dMinutes.innerText = 0;
             return;
         }
-
         const parts = startDateStr.split("-");
         startDayLabel.innerText = `Từ ngày: ${parts[2]}/${parts[1]}/${parts[0]}`;
 
-        // Chuyển đổi mili-giây sang đơn vị Ngày, Giờ, Phút thực tế
         const totalMinutes = Math.floor(diff / (1000 * 60));
         const totalHours = Math.floor(totalMinutes / 60);
-        
         const days = Math.floor(totalHours / 24);
         const hours = totalHours % 24;
         const minutes = totalMinutes % 60;
@@ -403,22 +435,53 @@
     function setStartDate() {
         const input = prompt("Nhập ngày hai bạn bắt đầu gặp/yêu nhau (Định dạng: Năm-Tháng-Ngày, ví dụ: 2025-02-14):", startDateStr || "2025-01-01");
         if (input === null) return;
-
         const regEx = /^\d{4}-\d{2}-\d{2}$/;
         if(!input.match(regEx)) {
-            alert("Sai định dạng rồi bạn ơi! Xin hãy nhập đúng kiểu: Năm-Tháng-Ngày (Ví dụ: 2025-05-20)");
+            alert("Sai định dạng rồi bạn ơi! Xin hãy nhập đúng kiểu: Năm-Tháng-Ngày");
             return;
         }
-
-        const d = new Date(input + "T00:00:00");
-        if(isNaN(d.getTime())) {
-            alert("Ngày bạn nhập không tồn tại trên lịch thực tế!");
-            return;
-        }
-
         startDateStr = input;
         localStorage.setItem('loveStartDate', startDateStr);
         updateLoveCounter();
+    }
+
+    // HỆ THỐNG XỬ LÝ ĐỊA CHỈ & BẢN ĐỒ
+    function updateMapUI() {
+        if (!myLoc || !loverLoc) {
+            mapContainer.innerHTML = `<div style="text-align: center; padding-top: 70px; color: #a0aec0; font-size: 13px;">Chưa cài đặt địa chỉ 2 người</div>`;
+            distanceKmLabel.innerText = "Khoảng cách: -- km";
+            return;
+        }
+
+        // Nhúng bản đồ hướng tuyến đường Google Maps bằng iframe (hoàn toàn miễn phí và chính xác)
+        const embedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(myLoc)}%20to%20${encodeURIComponent(loverLoc)}&output=embed&z=6`;
+        mapContainer.innerHTML = `<iframe src="${embedUrl}"></iframe>`;
+
+        // Tính khoảng cách chim bay ước tính dựa vào việc gọi ngẫu nhiên một khoảng cách mô phỏng trực quan 
+        // Vì tính khoảng cách km thực bằng API của Google bắt buộc phải có tài khoản visa tính phí.
+        // Giải pháp tối ưu: Lưu số km người dùng tự ước lượng/tra cứu để lưu trữ hiển thị đẹp nhất.
+        let savedKm = localStorage.getItem('savedKm') || "0";
+        distanceKmLabel.innerText = `📍 Từ [${myLoc}] đến [${loverLoc}]: ~ ${savedKm} km`;
+    }
+
+    function setLocations() {
+        const p1 = prompt("Nhập vị trí của bạn (Ví dụ: Hà Nội, hoặc Cầu Giấy, Hà Nội):", myLoc);
+        if (p1 === null) return;
+        
+        const p2 = prompt("Nhập vị trí của người ấy (Ví dụ: Hải Phòng, hoặc Quận 1, TP HCM):", loverLoc);
+        if (p2 === null) return;
+
+        const km = prompt("Số km khoảng cách thực tế giữa 2 nơi (Bạn tra Google Maps rồi điền vào đây nhé):", localStorage.getItem('savedKm') || "50");
+        if (km === null) return;
+
+        myLoc = p1.trim();
+        loverLoc = p2.trim();
+        
+        localStorage.setItem('myLocation', myLoc);
+        localStorage.setItem('loverLocation', loverLoc);
+        localStorage.setItem('savedKm', km.trim());
+
+        updateMapUI();
     }
 
     function updateUI() {
@@ -483,20 +546,25 @@
     }
 
     function resetBottle() {
-        if (confirm('Bạn có chắc chắn muốn xóa SẠCH TOÀN BỘ dữ liệu gồm số nước, lịch sử và cả ngày kỷ niệm không?')) {
+        if (confirm('Bạn có chắc chắn muốn xóa SẠCH TOÀN BỘ dữ liệu gồm số nước, lịch sử, ngày kỷ niệm và địa chỉ không?')) {
             count = 0;
             historyData = [];
             startDateStr = "";
+            myLoc = "";
+            loverLoc = "";
             localStorage.clear(); 
             updateUI();
+            updateMapUI();
             dDays.innerText = 0; dHours.innerText = 0; dMinutes.innerText = 0;
             startDayLabel.innerText = "(Chưa cài đặt ngày gặp)";
         }
     }
 
+    // Chạy các hàm tải dữ liệu ban đầu
     updateUI();
     updateLoveCounter();
-    setInterval(updateLoveCounter, 60000); // Tự động cập nhật phút mới mỗi 60 giây
+    updateMapUI();
+    setInterval(updateLoveCounter, 60000);
 </script>
 </body>
 </html>
