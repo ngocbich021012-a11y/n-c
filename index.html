@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Góc Nhỏ Của Hai Đứa </title>
+    <title>Góc Nhỏ Của Hai Đứa </title>
     <style>
         :root {
             --bg-color: #f4f7f6;
@@ -251,21 +251,21 @@
         const now = new Date();
         const currentYear = now.getFullYear();
 
-       // Thay thế đoạn mảng staticEvents hiện tại bằng đoạn này:
-let staticEvents = [
-    { name: "🎂 Sinh nhật cậu ấy (18/01)", month: 1, day: 18 },
-    { name: "🌹 Valentine Đỏ (14/02)", month: 2, day: 14 },
-    { name: "💝 Quốc tế Phụ nữ (08/03)", month: 3, day: 8 },
-    { name: "🤍 Valentine Trắng (14/03)", month: 3, day: 14 },
-    { name: "🧸 Quốc tế Thiếu nhi (01/06)", month: 6, day: 1 },
-    { name: "🏠 Ngày Gia đình VN (28/06)", month: 6, day: 28 },
-    { name: "🥣 Ngày Thất Tịch (07/07 Âm)", month: 8, day: 19 },
-    { name: "🎂 Sinh nhật mình (02/10)", month: 10, day: 2 },
-    { name: "💃 Ngày Phụ nữ VN (20/10)", month: 10, day: 20 },
-    { name: "🧔 Ngày Đàn ông (19/11)", month: 11, day: 19 },
-    { name: "🎄 Giáng Sinh (25/12)", month: 12, day: 25 },
-    { name: "🎆 Đêm Giao Thừa (31/12)", month: 12, day: 31 }
-];
+        // Danh sách ngày lễ và kỷ niệm đa dạng
+        let staticEvents = [
+            { name: "🎂 Sinh nhật cậu ấy (18/01)", month: 1, day: 18 },
+            { name: "🌹 Valentine Đỏ (14/02)", month: 2, day: 14 },
+            { name: "💝 Quốc tế Phụ nữ (08/03)", month: 3, day: 8 },
+            { name: "🤍 Valentine Trắng (14/03)", month: 3, day: 14 },
+            { name: "🧸 Quốc tế Thiếu nhi (01/06)", month: 6, day: 1 },
+            { name: "🏠 Ngày Gia đình VN (28/06)", month: 6, day: 28 },
+            { name: "🥣 Ngày Thất Tịch (07/07 Âm)", month: 8, day: 19 }, // Tính tương đối theo năm 2026 dương lịch
+            { name: "🎂 Sinh nhật mình (02/10)", month: 10, day: 2 },
+            { name: "💃 Ngày Phụ nữ VN (20/10)", month: 10, day: 20 },
+            { name: "🧔 Ngày Đàn ông (19/11)", month: 11, day: 19 },
+            { name: "🎄 Giáng Sinh (25/12)", month: 12, day: 25 },
+            { name: "🎆 Đêm Giao Thừa (31/12)", month: 12, day: 31 }
+        ];
 
         let displayEvents = [];
 
