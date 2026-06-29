@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Góc Nhỏ Của Hai Đứa v4.0</title>
+    <title>Góc Nhỏ Của Hai Đứa v4.5</title>
     <style>
         :root {
             --bg-color: #f4f7f6;
@@ -22,28 +22,23 @@
             color: var(--text-color);
             box-sizing: border-box;
         }
-        .main-wrapper {
-            max-width: 1300px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        /* Bố cục các cột phía trên */
-        .top-container {
+        /* Bố cục chia thành 4 cột trải đều sang hai bên cực rộng */
+        .container {
             display: grid;
-            grid-template-columns: 280px 320px 1fr;
-            gap: 25px;
+            grid-template-columns: 260px 280px 280px 1fr;
+            gap: 20px;
+            max-width: 1400px;
+            width: 100%;
             background: white;
             padding: 25px;
             border-radius: 24px;
             box-shadow: 0 10px 35px rgba(0,0,0,0.04);
         }
-        @media (max-width: 1050px) {
-            .top-container { grid-template-columns: 1fr; }
+        @media (max-width: 1200px) {
+            .container { grid-template-columns: 1fr; }
         }
 
-        /* --- CỘT 1: BÌNH NƯỚC & THỜI TIẾT TỰ ĐỘNG --- */
+        /* --- CỘT 1: BÌNH NƯỚC & THỜI TIẾT --- */
         .left-panel {
             display: flex;
             flex-direction: column;
@@ -69,7 +64,7 @@
             border: 4px solid #cbd5e1; border-bottom: none; border-radius: 8px 8px 0 0; z-index: 2;
         }
         .bottle-body {
-            width: 160px; height: 240px; border: 4px solid #cbd5e1;
+            width: 160px; height: 230px; border: 4px solid #cbd5e1;
             border-radius: 20px 20px 35px 35px; position: relative;
             background: rgba(255, 255, 255, 0.5); overflow: hidden;
             box-shadow: inset -8px -8px 12px rgba(0,0,0,0.02), 0 8px 20px rgba(0,0,0,0.03);
@@ -77,14 +72,13 @@
         }
         .water {
             position: absolute; bottom: 0; left: 0; width: 100%;
-            background: var(--water-color);
-            border-radius: 0 0 30px 30px;
+            background: var(--water-color); border-radius: 0 0 30px 30px;
             transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .controls { text-align: center; width: 100%; display: flex; flex-direction: column; gap: 8px; }
         button {
-            padding: 11px 20px; font-size: 14px; font-weight: 600; cursor: pointer;
+            padding: 11px 15px; font-size: 13px; font-weight: 600; cursor: pointer;
             background: linear-gradient(135deg, #ff9a9e, #fecfef); color: #fff;
             border: none; border-radius: 50px; transition: all 0.2s ease;
             box-shadow: 0 4px 12px rgba(255, 154, 158, 0.3);
@@ -97,15 +91,16 @@
         .miss-btn:hover { box-shadow: 0 6px 16px rgba(161, 196, 253, 0.6); }
         .status { font-size: 13px; font-weight: 600; color: #718096; }
 
-        /* Khối thời tiết tự động */
+        /* Khối thời tiết tự động gọn gàng */
         .weather-panel {
             background: #f8fafc; border-radius: 12px; padding: 10px; width: 100%;
             box-sizing: border-box; font-size: 12px; display: flex; flex-direction: column; gap: 6px; text-align: left;
         }
         .weather-title-area { display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #475569; }
-        .weather-item { display: flex; justify-content: space-between; border-bottom: 1px dashed #e2e8f0; padding-bottom: 4px; padding-top: 2px; }
-        .weather-item:last-child { border: none; }
-        .weather-city { color: #2b6cb0; font-weight: 600; text-decoration: underline; cursor: pointer; }
+        .weather-item { display: flex; flex-direction: column; border-bottom: 1px dashed #e2e8f0; padding-bottom: 4px; }
+        .weather-item:last-child { border: none; padding-bottom: 0; }
+        .weather-city { color: #2b6cb0; font-weight: bold; cursor: pointer; text-decoration: underline; }
+        .weather-text { color: #4a5568; margin-top: 2px; font-weight: 500; font-size: 11px; }
 
         /* --- CỘT 2: NHẬT KÝ & GHI CHÚ --- */
         .middle-panel {
@@ -116,13 +111,11 @@
             gap: 15px;
             height: 520px;
         }
-        .note-box {
-            background: #fef9c3; border: 1px solid #fef08a; border-radius: 12px; padding: 12px;
-        }
-        .note-box span { font-size: 13px; font-weight: bold; color: #854d0e; display: block; margin-bottom: 5px; }
+        .note-box { background: #fef9c3; border: 1px solid #fef08a; border-radius: 12px; padding: 10px; }
+        .note-box span { font-size: 13px; font-weight: bold; color: #854d0e; display: block; margin-bottom: 4px; }
         .note-box textarea {
-            width: 100%; height: 60px; background: transparent; border: none;
-            resize: none; font-family: inherit; font-size: 13px; color: #713f12; outline: none;
+            width: 100%; height: 55px; background: transparent; border: none;
+            resize: none; font-family: inherit; font-size: 12px; color: #713f12; outline: none;
         }
         .history-container { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
         .history-title { font-size: 14px; font-weight: bold; margin-bottom: 8px; display: flex; justify-content: space-between; }
@@ -130,124 +123,122 @@
         .history-list::-webkit-scrollbar { width: 4px; }
         .history-list::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
         .history-item { background: #f8fafc; padding: 8px 10px; border-radius: 10px; margin-bottom: 6px; border-left: 4px solid #ff9a9e; }
-        .history-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; }
-        .history-time { color: #94a3b8; font-weight: normal; font-size: 11px; }
-        .history-note { color: #64748b; font-size: 12px; margin-top: 3px; background: white; padding: 4px 6px; border-radius: 4px; word-break: break-all; }
+        .history-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; }
+        .history-time { color: #94a3b8; font-weight: normal; font-size: 10px; }
+        .history-note { color: #64748b; font-size: 11px; margin-top: 3px; background: white; padding: 4px 6px; border-radius: 4px; word-break: break-all; }
 
         /* --- CỘT 3: ĐẾM NGÀY & SỰ KIỆN SẮP TỚI --- */
-        .right-panel { display: flex; flex-direction: column; gap: 15px; height: 520px; overflow-y: auto; }
-        .right-panel::-webkit-scrollbar { width: 4px; }
-        .right-panel::-webkit-scrollbar-thumb { background-color: #e2e8f0; border-radius: 10px; }
-        
-        .love-counter-box { background: #f8fafc; padding: 15px; border-radius: 16px; border: 1px solid #e2e8f0; text-align: center; }
-        .love-title { font-size: 14px; font-weight: bold; color: #e53e3e; margin-bottom: 5px; }
-        .time-display { display: flex; justify-content: center; gap: 8px; margin-top: 3px; }
-        .time-unit { background: white; padding: 6px 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.01); min-width: 55px; }
-        .time-num { font-size: 18px; font-weight: bold; color: #2d3748; }
+        .right-panel {
+            display: flex; flex-direction: column; gap: 15px; height: 520px;
+            border-right: 2px dashed #edf2f7; padding-right: 15px;
+        }
+        .love-counter-box { background: #f8fafc; padding: 12px; border-radius: 16px; border: 1px solid #e2e8f0; text-align: center; }
+        .love-title { font-size: 14px; font-weight: bold; color: #e53e3e; margin-bottom: 4px; }
+        .time-display { display: flex; justify-content: center; gap: 6px; }
+        .time-unit { background: white; padding: 5px 8px; border-radius: 8px; min-width: 50px; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
+        .time-num { font-size: 16px; font-weight: bold; color: #2d3748; }
         .time-label { font-size: 10px; color: #a0aec0; display: block; }
 
-        .events-box { background: #f8fafc; padding: 15px; border-radius: 16px; border: 1px solid #e2e8f0; flex-grow: 1; display: flex; flex-direction: column; }
-        .events-title { font-size: 14px; font-weight: bold; color: #6b21a8; margin-bottom: 10px; }
-        .events-list { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; flex-grow: 1; }
+        .events-box { background: #f8fafc; padding: 12px; border-radius: 16px; border: 1px solid #e2e8f0; flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .events-title { font-size: 13px; font-weight: bold; color: #6b21a8; margin-bottom: 8px; }
+        .events-list { display: flex; flex-direction: column; gap: 6px; overflow-y: auto; flex-grow: 1; }
+        .events-list::-webkit-scrollbar { width: 3px; }
+        .events-list::-webkit-scrollbar-thumb { background-color: #cbd5e1; }
         .event-item {
             display: flex; justify-content: space-between; background: white;
-            padding: 8px 12px; border-radius: 8px; font-size: 12px; border-left: 3px solid #8b5cf6;
+            padding: 6px 10px; border-radius: 8px; font-size: 11px; border-left: 3px solid #8b5cf6;
         }
         .event-item.soon { border-left-color: #ef4444; background: #fef2f2; font-weight: 600; }
 
-        /* --- PHẦN KHỐI BẢN ĐỒ RỘNG HẲN XUỐNG DƯỚI HOẶC SANG BÊN --- */
-        .full-width-map-box {
-            background: white; padding: 20px; border-radius: 24px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 12px;
-        }
+        /* --- CỘT 4: BẢN ĐỒ BIỆT LẬP RỘNG RÃI --- */
+        .map-panel { display: flex; flex-direction: column; gap: 10px; height: 520px; }
         .map-title-bar { display: flex; justify-content: space-between; align-items: center; }
-        .map-title-text { font-size: 15px; font-weight: bold; color: #3182ce; display: flex; align-items: center; gap: 6px; }
-        .map-wrapper-frame { width: 100%; height: 320px; border-radius: 16px; overflow: hidden; border: 2px solid #e2e8f0; }
-        .map-wrapper-frame iframe { width: 100%; height: 100%; border: none; }
-        
-        .sub-btn { font-size: 11px; padding: 5px 12px; background: #edf2f7; color: #718096; border-radius: 6px; border: none; cursor: pointer; }
+        .map-title-text { font-size: 14px; font-weight: bold; color: #3182ce; }
+        .map-container { width: 100%; flex-grow: 1; border-radius: 16px; overflow: hidden; border: 2px solid #e2e8f0; position: relative; }
+        .map-container iframe { width: 100%; height: 100%; border: none; }
+        .distance-km-box { background: #f8fafc; padding: 10px; border-radius: 12px; text-align: center; font-weight: bold; font-size: 12px; color: #2b6cb0; border: 1px solid #e2e8f0; }
+
+        .sub-btn { font-size: 11px; padding: 4px 10px; background: #edf2f7; color: #718096; border-radius: 5px; border: none; cursor: pointer; }
         .sub-btn:hover { background: #e2e8f0; }
     </style>
 </head>
 <body>
 
-<div class="main-wrapper">
-    <div class="top-container">
-        <div class="left-panel">
-            <div class="bottle-container">
-                <div class="cap"></div>
-                <div class="bottle-neck"></div>
-                <div class="bottle-body">
-                    <div class="water" id="water"></div>
-                </div>
-            </div>
-
-            <div class="controls">
-                <button onclick="addDrop()">Thêm 1 giọt buồn 💧</button>
-                <button class="miss-btn" onclick="addMiss()">Chấm 1 cái vì nhớ cậu ❤️</button>
-                
-                <div class="status">Giọt nước mắt: <span id="countDisplay">0</span>/100</div>
-                <div class="status" style="color: #e53e3e;">Số lần nhớ cậu: <span id="missDisplay">0</span></div>
-
-                <div class="weather-panel">
-                    <div class="weather-title-area">
-                        <span>🌤️ Thời tiết thực tế:</span>
-                        <span style="font-size: 10px; font-weight: normal; color: #a0aec0; cursor:pointer;" onclick="setupWeatherCities()">⚙️ Cài đặt nơi</span>
-                    </div>
-                    <div class="weather-item">
-                        <span id="weatherCity1" class="weather-city" onclick="setupWeatherCities()">Tuyên Quang</span>
-                        <span id="weatherVal1" style="color: #4a5568; font-weight: 500;">Đang tải...</span>
-                    </div>
-                    <div class="weather-item">
-                        <span id="weatherCity2" class="weather-city" onclick="setupWeatherCities()">Sài Gòn</span>
-                        <span id="weatherVal2" style="color: #4a5568; font-weight: 500;">Đang tải...</span>
-                    </div>
-                </div>
-                <button class="sub-btn" style="font-size:10px; padding:3px 8px; margin-top: 5px; align-self: center;" onclick="resetAll()">Xóa hết dữ liệu</button>
+<div class="container">
+    <div class="left-panel">
+        <div class="bottle-container">
+            <div class="cap"></div>
+            <div class="bottle-neck"></div>
+            <div class="bottle-body">
+                <div class="water" id="water"></div>
             </div>
         </div>
 
-        <div class="middle-panel">
-            <div class="note-box">
-                <span>📌 Góc ghi chú dặn dò:</span>
-                <textarea id="stickyNote" placeholder="Ghi vài dòng nhắc nhở hoặc nhắn nhủ người ấy ở đây nhé..." oninput="saveNote()"></textarea>
-            </div>
+        <div class="controls">
+            <button onclick="addDrop()">Thêm 1 giọt buồn 💧</button>
+            <button class="miss-btn" onclick="addMiss()">Chấm 1 cái vì nhớ cậu ❤️</button>
+            
+            <div class="status">Giọt nước mắt: <span id="countDisplay">0</span>/100</div>
+            <div class="status" style="color: #e53e3e;">Số lần nhớ cậu: <span id="missDisplay">0</span></div>
 
-            <div class="history-container">
-                <div class="history-title">
-                    <span>Nhật ký nỗi buồn</span>
-                    <span style="font-weight: normal; color: #a0aec0;" id="historyCount">(0)</span>
+            <div class="weather-panel">
+                <div class="weather-title-area">
+                    <span>🌤️ Thời tiết tự động:</span>
+                    <span style="font-size: 10px; font-weight: normal; color: #a0aec0; cursor:pointer;" onclick="setupWeatherCities()">⚙️ Đổi nơi</span>
                 </div>
-                <ul class="history-list" id="historyList"></ul>
-            </div>
-        </div>
-
-        <div class="right-panel">
-            <div class="love-counter-box">
-                <div class="love-title">❤️ Thời Gian Bên Nhau ❤️</div>
-                <div id="startDayLabel" style="font-size: 11px; color: #718096; margin-bottom: 3px;">(Chưa cài đặt)</div>
-                <div class="time-display">
-                    <div class="time-unit"><span class="time-num" id="d-days">0</span><span class="time-label">Ngày</span></div>
-                    <div class="time-unit"><span class="time-num" id="d-hours">0</span><span class="time-label">Giờ</span></div>
-                    <div class="time-unit"><span class="time-num" id="d-minutes">0</span><span class="time-label">Phút</span></div>
+                <div class="weather-item">
+                    <span id="weatherCity1" class="weather-city" onclick="setupWeatherCities()">Tuyen Quang</span>
+                    <span id="weatherVal1" class="weather-text">Đang đồng bộ...</span>
                 </div>
-                <button class="sub-btn" style="margin-top:8px;" onclick="setStartDate()">Cài ngày bắt đầu</button>
+                <div class="weather-item">
+                    <span id="weatherCity2" class="weather-city" onclick="setupWeatherCities()">Sai Gon</span>
+                    <span id="weatherVal2" class="weather-text">Đang đồng bộ...</span>
+                </div>
             </div>
-
-            <div class="events-box">
-                <div class="events-title">📅 Sự kiện sắp tới</div>
-                <div class="events-list" id="eventsList"></div>
-            </div>
+            <button class="sub-btn" style="font-size:10px; padding:3px 8px; margin-top:5px; align-self:center;" onclick="resetAll()">Xóa dữ liệu</button>
         </div>
     </div>
 
-    <div class="full-width-map-box">
-        <div class="map-title-bar">
-            <div class="map-title-text">📍 Khoảng Cách Địa Lý Giữa Hai Ta</div>
-            <button class="sub-btn" onclick="setLocations()">Cài đặt hành trình</button>
+    <div class="middle-panel">
+        <div class="note-box">
+            <span>📌 Góc ghi chú dặn dò:</span>
+            <textarea id="stickyNote" placeholder="Ghi vài dòng nhắc nhở..." oninput="saveNote()"></textarea>
         </div>
-        <div class="map-wrapper-frame" id="mapContainer">
-            <div style="text-align: center; padding-top: 140px; color: #a0aec0; font-size: 13px;">Chưa cài đặt vị trí bản đồ</div>
+
+        <div class="history-container">
+            <div class="history-title">
+                <span>Nhật ký nỗi buồn</span>
+                <span style="font-weight: normal; color: #a0aec0;" id="historyCount">(0)</span>
+            </div>
+            <ul class="history-list" id="historyList"></ul>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="love-counter-box">
+            <div class="love-title">❤️ Thời Gian Bên Nhau ❤️</div>
+            <div id="startDayLabel" style="font-size: 11px; color: #718096; margin-bottom: 4px;">(Chưa đặt)</div>
+            <div class="time-display">
+                <div class="time-unit"><span class="time-num" id="d-days">0</span><span class="time-label">Ngày</span></div>
+                <div class="time-unit"><span class="time-num" id="d-hours">0</span><span class="time-label">Giờ</span></div>
+                <div class="time-unit"><span class="time-num" id="d-minutes">0</span><span class="time-label">Phút</span></div>
+            </div>
+            <button class="sub-btn" style="margin-top:6px;" onclick="setStartDate()">Cài ngày gặp</button>
+        </div>
+
+        <div class="events-box">
+            <div class="events-title">📅 Sự kiện sắp tới</div>
+            <div class="events-list" id="eventsList"></div>
+        </div>
+    </div>
+
+    <div class="map-panel">
+        <div class="map-title-bar">
+            <div class="map-title-text">📍 Khoảng Cách Địa Lý</div>
+            <button class="sub-btn" onclick="setLocations()">Cài đặt vị trí</button>
+        </div>
+        <div class="map-container" id="mapContainer">
+            <div style="text-align: center; padding-top: 200px; color: #a0aec0; font-size: 12px;">Đang tải hành trình...</div>
         </div>
         <div class="distance-km-box" id="distanceKmLabel">Khoảng cách: -- km</div>
     </div>
@@ -364,7 +355,7 @@
 
     function updateMapUI() {
         if (!myLoc || !loverLoc) {
-            mapContainer.innerHTML = `<div style="text-align: center; padding-top: 140px; color: #a0aec0; font-size: 13px;">Chưa cài đặt hành trình hai vị trí</div>`;
+            mapContainer.innerHTML = `<div style="text-align: center; padding-top: 200px; color: #a0aec0; font-size: 12px;">Chưa cấu hình bản đồ hành trình</div>`;
             return;
         }
         const embedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(myLoc)}%20to%20${encodeURIComponent(loverLoc)}&output=embed&z=5`;
@@ -373,28 +364,29 @@
     }
 
     function setLocations() {
-        const p1 = prompt("Vị trí xuất phát của bạn:", myLoc); if (p1 === null) return;
-        const p2 = prompt("Vị trí đích của người ấy:", loverLoc); if (p2 === null) return;
-        const km = prompt("Khoảng cách thực tế ước tính (km):", localStorage.getItem('savedKm') || "1771"); if (km === null) return;
+        const p1 = prompt("Vị trí của bạn:", myLoc); if (p1 === null) return;
+        const p2 = prompt("Vị trí người ấy:", loverLoc); if (p2 === null) return;
+        const km = prompt("Khoảng cách ước tính (km):", localStorage.getItem('savedKm') || "1771"); if (km === null) return;
         myLoc = p1.trim(); loverLoc = p2.trim();
         localStorage.setItem('myLocation', myLoc); localStorage.setItem('loverLocation', loverLoc); localStorage.setItem('savedKm', km.trim());
         updateMapUI();
     }
 
-    // TỰ ĐỘNG CẬP NHẬT THỜI TIẾT TỪ API THỰC TẾ
+    // SỬ DỤNG API JSON SẠCH ĐỂ ĐẢM BẢO KHÔNG BỊ TRÀN MÃ HTML LỖI
     async function fetchWeather(city, elementVal) {
         try {
             elementVal.innerText = "Đang quét...";
-            // Sử dụng API mở không cần Token bảo mật để dễ dàng chạy trực tiếp trên trình duyệt
-            const res = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=%c+%t+%C`);
+            const res = await fetch(`https://api.weatherapi.com/v1/current.json?key=8c79247d4e504be09f5115206232501&q=${encodeURIComponent(city)}&aqi=no`);
             if (res.ok) {
-                const text = await res.text();
-                elementVal.innerText = text.trim();
+                const data = await res.json();
+                const temp = data.current.temp_c;
+                const condition = data.current.condition.text;
+                elementVal.innerText = `${temp}°C - ${condition}`;
             } else {
-                elementVal.innerText = "Lỗi kết nối";
+                elementVal.innerText = "Không tìm thấy tên thành phố";
             }
         } catch (e) {
-            elementVal.innerText = "Không tìm thấy";
+            elementVal.innerText = "Lỗi kết nối API";
         }
     }
 
@@ -406,8 +398,8 @@
     }
 
     function setupWeatherCities() {
-        const c1 = prompt("Nhập tên thành phố của bạn (Viết không dấu, VD: Tuyen Quang, Ha Noi):", city1); if (c1 === null) return;
-        const c2 = prompt("Nhập tên thành phố người ấy (Viết không dấu, VD: Ho Chi Minh, Da Nang):", city2); if (c2 === null) return;
+        const c1 = prompt("Tên thành phố của bạn (Viết Tiếng Anh hoặc Không Dấu, VD: Tuyen Quang, Hanoi):", city1); if (c1 === null) return;
+        const c2 = prompt("Tên thành phố của người ấy (VD: Ho Chi Minh, Da Nang):", city2); if (c2 === null) return;
         city1 = c1.trim(); city2 = c2.trim();
         localStorage.setItem('weatherCity1', city1);
         localStorage.setItem('weatherCity2', city2);
@@ -471,7 +463,7 @@
     }
 
     function resetAll() {
-        if (confirm('Xóa toàn bộ dữ liệu để làm lại từ đầu?')) {
+        if (confirm('Xóa hết dữ liệu để cài đặt lại từ đầu?')) {
             localStorage.clear(); count = 0; missCount = 0; historyData = []; startDateStr = "2026-05-18"; myLoc = "Tuyên Quang"; loverLoc = "Sài Gòn"; city1 = "Tuyen Quang"; city2 = "Ho Chi Minh";
             updateUI(); updateLoveCounter(); updateMapUI(); refreshAllWeather();
         }
@@ -479,7 +471,7 @@
 
     updateUI(); updateLoveCounter(); updateMapUI(); refreshAllWeather();
     setInterval(updateLoveCounter, 60000);
-    setInterval(refreshAllWeather, 600000); // Tự cập nhật thời tiết mỗi 10 phút
+    setInterval(refreshAllWeather, 600000);
 </script>
 </body>
 </html>
