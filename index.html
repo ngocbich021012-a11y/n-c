@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -190,7 +191,7 @@
             }
         }
 
-        /* Khối Đếm Ngày Gặp Nhau */
+        /* Khối Đếm Thời Gian Bên Nhau */
         .love-counter-box {
             background: #f8fafc;
             padding: 20px;
@@ -219,7 +220,7 @@
             padding: 10px 14px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            min-width: 60px;
+            min-width: 65px;
         }
         .time-num {
             font-size: 22px;
@@ -333,10 +334,9 @@
 </div>
 
 <script>
-    // Khởi tạo các biến cục bộ
     let count = localStorage.getItem('sadDrops') ? parseInt(localStorage.getItem('sadDrops')) : 0;
     let historyData = localStorage.getItem('sadHistory') ? JSON.parse(localStorage.getItem('sadHistory')) : [];
-    let startDateStr = localStorage.getItem('loveStartDate') || ""; // Lưu chuỗi định dạng YYYY-MM-DD
+    let startDateStr = localStorage.getItem('loveStartDate') || ""; 
 
     const waterElement = document.getElementById('water');
     const countDisplay = document.getElementById('countDisplay');
@@ -345,7 +345,6 @@
     const historyList = document.getElementById('historyList');
     const historyCount = document.getElementById('historyCount');
 
-    // Các thẻ phục vụ đồng hồ đếm ngày
     const dDays = document.getElementById('d-days');
     const dHours = document.getElementById('d-hours');
     const dMinutes = document.getElementById('d-minutes');
@@ -368,7 +367,7 @@
         osc.stop(ctx.currentTime + 0.12);
     }
 
-    // Hàm cập nhật đồng hồ đếm ngày gặp nhau
+    // Hàm đếm thời gian chi tiết: Ngày, Giờ, Phút
     function updateLoveCounter() {
         if (!startDateStr) {
             startDayLabel.innerText = "Bấm nút phía dưới để cài đặt ngày";
@@ -385,11 +384,10 @@
             return;
         }
 
-        // Định dạng hiển thị ngày đã chọn
         const parts = startDateStr.split("-");
         startDayLabel.innerText = `Từ ngày: ${parts[2]}/${parts[1]}/${parts[0]}`;
 
-        // Tính toán toán học thời gian
+        // Chuyển đổi mili-giây sang đơn vị Ngày, Giờ, Phút thực tế
         const totalMinutes = Math.floor(diff / (1000 * 60));
         const totalHours = Math.floor(totalMinutes / 60);
         
@@ -402,12 +400,10 @@
         dMinutes.innerText = minutes;
     }
 
-    // Hàm bật ô để người dùng chọn/nhập ngày kỷ niệm
     function setStartDate() {
         const input = prompt("Nhập ngày hai bạn bắt đầu gặp/yêu nhau (Định dạng: Năm-Tháng-Ngày, ví dụ: 2025-02-14):", startDateStr || "2025-01-01");
         if (input === null) return;
 
-        // Kiểm tra xem định dạng nhập vào có hợp lệ không
         const regEx = /^\d{4}-\d{2}-\d{2}$/;
         if(!input.match(regEx)) {
             alert("Sai định dạng rồi bạn ơi! Xin hãy nhập đúng kiểu: Năm-Tháng-Ngày (Ví dụ: 2025-05-20)");
@@ -491,19 +487,16 @@
             count = 0;
             historyData = [];
             startDateStr = "";
-            localStorage.clear(); // Xóa sạch bộ nhớ cục bộ
+            localStorage.clear(); 
             updateUI();
             dDays.innerText = 0; dHours.innerText = 0; dMinutes.innerText = 0;
             startDayLabel.innerText = "(Chưa cài đặt ngày gặp)";
         }
     }
 
-    // Chạy cập nhật UI ban đầu
     updateUI();
     updateLoveCounter();
-    
-    // Tự động chạy lại bộ đếm ngày sau mỗi 1 phút để cập nhật số phút chính xác liên tục
-    setInterval(updateLoveCounter, 60000);
+    setInterval(updateLoveCounter, 60000); // Tự động cập nhật phút mới mỗi 60 giây
 </script>
 </body>
 </html>
