@@ -5,86 +5,415 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Góc Nhỏ Của Hai Đứa v6.0</title>
     <style>
-        :root { --bg-color: #f4f7f6; --text-color: #4a5568; --water-color: linear-gradient(180deg, #4ea8de, #2a6cb0); }
-        body { display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; background-color: var(--bg-color); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; color: var(--text-color); }
-        .container { display: grid; grid-template-columns: 260px 280px 280px 1fr; gap: 20px; max-width: 1400px; width: 100%; background: white; padding: 25px; border-radius: 24px; box-shadow: 0 10px 35px rgba(0,0,0,0.04); }
-        @media (max-width: 1200px) { .container { grid-template-columns: 1fr; } }
-        /* Các thành phần giao diện giữ nguyên như cũ để không làm hỏng layout */
-        .left-panel, .middle-panel, .right-panel, .map-panel { display: flex; flex-direction: column; gap: 15px; border-right: 2px dashed #edf2f7; padding-right: 15px; }
-        .bottle-body { width: 160px; height: 230px; border: 4px solid #cbd5e1; border-radius: 20px 20px 35px 35px; position: relative; background: rgba(255, 255, 255, 0.5); overflow: hidden; margin: 10px auto; }
-        .water { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--water-color); transition: height 0.6s ease; }
-        button { padding: 10px; cursor: pointer; border: none; border-radius: 20px; background: #ff9a9e; color: white; font-weight: bold; }
-        .weather-frame-box iframe { width: 100%; height: 60px; border: none; }
-        textarea { width: 100%; height: 100px; resize: none; border: 1px solid #ddd; border-radius: 8px; }
-        .map-container { width: 100%; height: 300px; border: 1px solid #ddd; border-radius: 12px; overflow: hidden; }
+        :root {
+            --bg-color: #f4f7f6;
+            --text-color: #4a5568;
+            --water-color: linear-gradient(180deg, #4ea8de, #2a6cb0);
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+            box-sizing: border-box;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 260px 280px 280px 1fr;
+            gap: 20px;
+            max-width: 1400px;
+            width: 100%;
+            background: white;
+            padding: 25px;
+            border-radius: 24px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.04);
+        }
+        @media (max-width: 1200px) {
+            .container { grid-template-columns: 1fr; }
+        }
+
+        /* --- CỘT 1 --- */
+        .left-panel { display: flex; flex-direction: column; align-items: center; border-right: 2px dashed #edf2f7; padding-right: 15px; }
+        .bottle-container { display: flex; flex-direction: column; align-items: center; position: relative; margin-top: 10px; margin-bottom: 15px; }
+        .cap { width: 70px; height: 18px; background: #b5835a; border-radius: 6px 6px 4px 4px; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.15); margin-bottom: -2px; z-index: 3; }
+        .bottle-neck { width: 100px; height: 18px; background: rgba(255,255,255,0.6); border: 4px solid #cbd5e1; border-bottom: none; border-radius: 8px 8px 0 0; z-index: 2; }
+        .bottle-body { width: 160px; height: 230px; border: 4px solid #cbd5e1; border-radius: 20px 20px 35px 35px; position: relative; background: rgba(255, 255, 255, 0.5); overflow: hidden; box-shadow: inset -8px -8px 12px rgba(0,0,0,0.02), 0 8px 20px rgba(0,0,0,0.03); z-index: 1; margin-top: -4px; }
+        .water { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--water-color); border-radius: 0 0 30px 30px; transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .controls { text-align: center; width: 100%; display: flex; flex-direction: column; gap: 8px; }
+        button { padding: 11px 15px; font-size: 13px; font-weight: 600; cursor: pointer; background: linear-gradient(135deg, #ff9a9e, #fecfef); color: #fff; border: none; border-radius: 50px; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(255, 154, 158, 0.3); }
+        button:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(255, 154, 158, 0.4); }
+        .miss-btn { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); box-shadow: 0 4px 12px rgba(161, 196, 253, 0.4); }
+        .miss-btn:hover { box-shadow: 0 6px 16px rgba(161, 196, 253, 0.6); }
+        .status { font-size: 13px; font-weight: 600; color: #718096; }
+        .weather-panel { background: #f8fafc; border-radius: 12px; padding: 10px; width: 100%; box-sizing: border-box; font-size: 12px; display: flex; flex-direction: column; gap: 5px; text-align: left; }
+        .weather-title-area { display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #475569; }
+        .weather-frame-box { width: 100%; height: 70px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; background: #fff; }
+        .weather-frame-box iframe { width: 100%; height: 100%; border: none; }
+
+        /* --- CỘT 2 --- */
+        .middle-panel { display: flex; flex-direction: column; border-right: 2px dashed #edf2f7; padding-right: 15px; gap: 15px; height: 580px; }
+        .note-box { background: #fef9c3; border: 1px solid #fef08a; border-radius: 12px; padding: 10px; }
+        .note-box span { font-size: 13px; font-weight: bold; color: #854d0e; display: block; margin-bottom: 4px; }
+        .note-box textarea { width: 100%; height: 55px; background: transparent; border: none; resize: none; font-family: inherit; font-size: 12px; color: #713f12; outline: none; }
+        .history-container { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
+        .history-title { font-size: 14px; font-weight: bold; margin-bottom: 8px; display: flex; justify-content: space-between; }
+        .history-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; }
+        .history-list::-webkit-scrollbar { width: 4px; }
+        .history-list::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        .history-item { background: #f8fafc; padding: 8px 10px; border-radius: 10px; margin-bottom: 6px; border-left: 4px solid #ff9a9e; }
+        .history-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; }
+        .history-time { color: #94a3b8; font-weight: normal; font-size: 10px; }
+        .history-note { color: #64748b; font-size: 11px; margin-top: 3px; background: white; padding: 4px 6px; border-radius: 4px; word-break: break-all; }
+
+        /* --- CỘT 3 --- */
+        .right-panel { display: flex; flex-direction: column; gap: 15px; height: 580px; border-right: 2px dashed #edf2f7; padding-right: 15px; }
+        .love-counter-box { background: #f8fafc; padding: 12px; border-radius: 16px; border: 1px solid #e2e8f0; text-align: center; }
+        .love-title { font-size: 14px; font-weight: bold; color: #e53e3e; margin-bottom: 4px; }
+        .time-display { display: flex; justify-content: center; gap: 6px; }
+        .time-unit { background: white; padding: 5px 8px; border-radius: 8px; min-width: 50px; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
+        .time-num { font-size: 16px; font-weight: bold; color: #2d3748; }
+        .time-label { font-size: 10px; color: #a0aec0; display: block; }
+        .events-box { background: #f8fafc; padding: 12px; border-radius: 16px; border: 1px solid #e2e8f0; flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .events-title { font-size: 13px; font-weight: bold; color: #6b21a8; margin-bottom: 8px; }
+        .events-list { display: flex; flex-direction: column; gap: 6px; overflow-y: auto; flex-grow: 1; }
+        .events-list::-webkit-scrollbar { width: 3px; }
+        .events-list::-webkit-scrollbar-thumb { background-color: #cbd5e1; }
+        .event-item { display: flex; justify-content: space-between; background: white; padding: 6px 10px; border-radius: 8px; font-size: 11px; border-left: 3px solid #8b5cf6; }
+        .event-item.soon { border-left-color: #ef4444; background: #fef2f2; font-weight: 600; }
+
+        /* --- CỘT 4 --- */
+        .map-panel { display: flex; flex-direction: column; gap: 10px; height: 580px; }
+        .map-title-bar { display: flex; justify-content: space-between; align-items: center; }
+        .map-title-text { font-size: 14px; font-weight: bold; color: #3182ce; }
+        .map-container { width: 100%; flex-grow: 1; border-radius: 16px; overflow: hidden; border: 2px solid #e2e8f0; position: relative; background: #edf2f7; }
+        .map-container iframe { width: 100%; height: 100%; border: none; }
+        .distance-km-box { background: #f8fafc; padding: 10px; border-radius: 12px; text-align: center; font-weight: bold; font-size: 12px; color: #2b6cb0; border: 1px solid #e2e8f0; }
+        .sub-btn { font-size: 11px; padding: 4px 10px; background: #edf2f7; color: #718096; border-radius: 5px; border: none; cursor: pointer; }
+        .sub-btn:hover { background: #e2e8f0; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="left-panel">
-        <div class="bottle-body"><div class="water" id="water"></div></div>
-        <button onclick="addDrop()">Thêm 1 giọt buồn 💧</button>
-        <button onclick="addMiss()">Chấm 1 cái vì nhớ ❤️</button>
-        <p>Giọt nước: <span id="countDisplay">0</span>/100</p>
-        <div class="weather-panel">
-            <p>Thời tiết:</p>
-            <div class="weather-frame-box"><iframe id="frameWeather1" src="https://wttr.in/Tuyen_Quang?format=4&lang=vi"></iframe></div>
-            <div class="weather-frame-box"><iframe id="frameWeather2" src="https://wttr.in/Ho_Chi_Minh?format=4&lang=vi"></iframe></div>
+        <div class="bottle-container">
+            <div class="cap"></div>
+            <div class="bottle-neck"></div>
+            <div class="bottle-body">
+                <div class="water" id="water"></div>
+            </div>
+        </div>
+        <div class="controls">
+            <button onclick="addDrop()">Thêm 1 giọt buồn 💧</button>
+            <button class="miss-btn" onclick="addMiss()">Chấm 1 cái vì nhớ cậu ❤️</button>
+            <div class="status">Giọt nước mắt: <span id="countDisplay">0</span>/100</div>
+            <div class="status" style="color: #e53e3e;">Số lần nhớ cậu: <span id="missDisplay">0</span></div>
+
+            <div class="weather-panel">
+                <div class="weather-title-area">
+                    <span>🌤️ Thời tiết 2 nơi:</span>
+                    <span style="font-size: 10px; font-weight: normal; color: #a0aec0; cursor:pointer;" onclick="setupWeatherCities()">⚙️ Đổi nơi</span>
+                </div>
+                <div style="font-size: 11px; font-weight: 600; color:#4a5568;" id="labelCity1">Tuyên Quang:</div>
+                <div class="weather-frame-box"><iframe id="frameWeather1" src="https://wttr.in/Tuyen_Quang?format=4&lang=vi"></iframe></div>
+                <div style="font-size: 11px; font-weight: 600; color:#4a5568;" id="labelCity2">Sài Gòn:</div>
+                <div class="weather-frame-box"><iframe id="frameWeather2" src="https://wttr.in/Ho_Chi_Minh?format=4&lang=vi"></iframe></div>
+            </div>
+            <button class="sub-btn" style="font-size:10px; padding:3px 8px; margin-top:5px; align-self:center;" onclick="resetAll()">Xóa dữ liệu</button>
         </div>
     </div>
 
     <div class="middle-panel">
-        <textarea id="stickyNote" placeholder="Ghi chú..." oninput="saveNote()"></textarea>
-        <ul id="historyList"></ul>
+        <div class="note-box">
+            <span>📌 Góc ghi chú dặn dò:</span>
+            <textarea id="stickyNote" placeholder="Ghi vài dòng nhắc nhở..." oninput="saveNote()"></textarea>
+        </div>
+        <div class="history-container">
+            <div class="history-title"><span>Nhật ký nỗi buồn</span><span style="font-weight: normal; color: #a0aec0;" id="historyCount">(0)</span></div>
+            <ul class="history-list" id="historyList"></ul>
+        </div>
     </div>
 
     <div class="right-panel">
-        <div id="loveCounter">Thời gian: <span id="d-days">0</span> ngày</div>
-        <div id="eventsList"></div>
+        <div class="love-counter-box">
+            <div class="love-title">❤️ Thời Gian Bên Nhau ❤️</div>
+            <div id="startDayLabel" style="font-size: 11px; color: #718096; margin-bottom: 4px;">(Chưa đặt)</div>
+            <div class="time-display">
+                <div class="time-unit"><span class="time-num" id="d-days">0</span><span class="time-label">Ngày</span></div>
+                <div class="time-unit"><span class="time-num" id="d-hours">0</span><span class="time-label">Giờ</span></div>
+                <div class="time-unit"><span class="time-num" id="d-minutes">0</span><span class="time-label">Phút</span></div>
+            </div>
+            <button class="sub-btn" style="margin-top:6px;" onclick="setStartDate()">Cài ngày gặp</button>
+        </div>
+        <div class="events-box">
+            <div class="events-title">📅 Danh sách kỷ niệm & Sự kiện</div>
+            <div class="events-list" id="eventsList"></div>
+        </div>
     </div>
 
     <div class="map-panel">
-        <div class="map-container" id="mapContainer"></div>
-        <button onclick="setLocations()">Cài đặt vị trí</button>
+        <div class="map-title-bar"><div class="map-title-text">📍 Khoảng Cách Địa Lý</div><button class="sub-btn" onclick="setLocations()">Cài đặt vị trí</button></div>
+        <div class="map-container" id="mapContainer"><div style="text-align: center; padding-top: 200px; color: #a0aec0; font-size: 12px;">Đang tải bản đồ...</div></div>
+        <div class="distance-km-box" id="distanceKmLabel">Khoảng cách: -- km</div>
     </div>
 </div>
 
 <script>
-    let count = parseInt(localStorage.getItem('sadDrops') || 0);
-    let myLoc = localStorage.getItem('myLocation') || "Tuyen_Quang";
-    let loverLoc = localStorage.getItem('loverLocation') || "Ho_Chi_Minh";
+    let count = localStorage.getItem('sadDrops') ? parseInt(localStorage.getItem('sadDrops')) : 0;
+    let missCount = localStorage.getItem('missCount') ? parseInt(localStorage.getItem('missCount')) : 0;
+    let historyData = localStorage.getItem('sadHistory') ? JSON.parse(localStorage.getItem('sadHistory')) : [];
+    let startDateStr = localStorage.getItem('loveStartDate') || "2026-05-18"; 
+    let myLoc = localStorage.getItem('myLocation') || "Tuyên Quang";
+    let loverLoc = localStorage.getItem('loverLocation') || "Sài Gòn";
+    let city1 = localStorage.getItem('weatherCity1') || "Tuyen_Quang";
+    let city2 = localStorage.getItem('weatherCity2') || "Ho_Chi_Minh";
 
-    function addDrop() {
-        count++;
-        localStorage.setItem('sadDrops', count);
-        document.getElementById('countDisplay').innerText = count;
-        document.getElementById('water').style.height = (count % 100) + '%';
+    const waterElement = document.getElementById('water');
+    const countDisplay = document.getElementById('countDisplay');
+    const missDisplay = document.getElementById('missDisplay');
+    const historyList = document.getElementById('historyList');
+    const historyCount = document.getElementById('historyCount');
+    const dDays = document.getElementById('d-days');
+    const dHours = document.getElementById('d-hours');
+    const dMinutes = document.getElementById('d-minutes');
+    const startDayLabel = document.getElementById('startDayLabel');
+    const mapContainer = document.getElementById('mapContainer');
+    const distanceKmLabel = document.getElementById('distanceKmLabel');
+    const eventsList = document.getElementById('eventsList');
+    const stickyNote = document.getElementById('stickyNote');
+    const labelCity1 = document.getElementById('labelCity1');
+    const labelCity2 = document.getElementById('labelCity2');
+    const frameWeather1 = document.getElementById('frameWeather1');
+    const frameWeather2 = document.getElementById('frameWeather2');
+
+    // HỆ THỐNG KIỂM TRA POPUP THÔNG BÁO TỰ ĐỘNG KHÔNG SÓT NGÀY NÀO
+    function checkSpecialAnniversaries(totalDays) {
+        const now = new Date();
+        const m = now.getMonth() + 1;
+        const d = now.getDate();
+
+        // 1. Sinh nhật hai đứa
+        if (m === 10 && d === 2) { alert("🎉 Happy Birthday To You! Chúc bạn tuổi mới ngập tràn hạnh phúc, nụ cười và luôn có người ấy bên cạnh! 🎂🎁❤️"); return; }
+        if (m === 1 && d === 18) { alert("🎉 Hôm nay sinh nhật của người ấy rồi! Đừng quên gửi ngàn lời yêu thương và bất ngờ ngọt ngào nha! 🎂🎈💞"); return; }
+
+        // 2. Các mốc ngày lớn
+        if (totalDays > 0 && totalDays % 100 === 0) { alert(`💖 WOW! Tròn đúng mốc ${totalDays} ngày bên nhau rồi đấy! Chúc hai đứa mãi vững bền bên nhau! 🎉✨`); return; }
+
+        // 3. Ngày kỷ niệm năm (Đầy năm)
+        if (totalDays > 0 && totalDays % 365 === 0) { alert(`🌹 Chúc mừng Kỷ Niệm ${totalDays / 365} Năm Ngày Yêu Nhau! Cảm ơn vì đã luôn đồng hành cùng nhau trên mọi chặng đường! 🥂💑`); return; }
+
+        // 4. Ngày trùng hàng tháng (Kỷ niệm tháng)
+        if (startDateStr) {
+            const startDayNum = parseInt(startDateStr.split("-")[2]);
+            if (d === startDayNum) { alert("💞 Tin nhắn ngọt ngào: Hôm nay là ngày kỷ niệm tháng yêu nhau của hai cậu đó! Hãy dành thời gian nhắn nhủ yêu thương nhé! 🥰"); return; }
+        }
+
+        // 5. Các ngày lễ kỷ niệm lãng mạn trong năm
+        if (m === 2 && d === 14) { alert("💞 Happy Valentine's Day! Chúc hai trái tim luôn đập cùng một nhịp điệu yêu thương ngọt ngào! 🌹"); }
+        else if (m === 3 && d === 14) { alert("🤍 Happy Valentine's White Day! Ngày đáp lại lời tỏ tình dễ thương! 🍬"); }
+        else if (m === 3 && d === 8) { alert("💝 Chúc một nửa thế giới xinh đẹp Quốc tế Phụ nữ thật rực rỡ và hạnh phúc! 🌸"); }
+        else if (m === 6 && d === 28) { alert("🏠 Ngày Gia đình Việt Nam! Chúc tổ ấm tương lai của hai đứa luôn ngập tràn tiếng cười! 👨‍👩‍👧"); }
+        else if (m === 10 && d === 20) { alert("💃 Ngày Phụ nữ Việt Nam! Chúc cậu luôn là nàng công chúa hạnh phúc nhất trong mắt người ấy! 👑✨"); }
+        else if (m === 12 && d === 25) { alert("🎄 Merry Christmas! Chúc hai đứa có đêm Giáng Sinh thật ấm áp, an lành! ❄️❤️"); }
     }
 
-    function addMiss() { alert("Đã gửi đi một cái ôm!"); }
+    function updateLoveCounter() {
+        if (!startDateStr) { startDayLabel.innerText = "Chưa cài đặt ngày gắn kết"; return; }
+        const start = new Date(startDateStr + "T00:00:00");
+        const now = new Date(); const diff = now - start;
+        if (diff < 0) { startDayLabel.innerText = "Ngày ở tương lai mất rồi!"; return; }
+        
+        const parts = startDateStr.split("-");
+        startDayLabel.innerText = `Từ ngày: ${parts[2]}/${parts[1]}/${parts[0]}`;
 
-    function saveNote() { localStorage.setItem('stickyNoteData', document.getElementById('stickyNote').value); }
+        const totalMinutes = Math.floor(diff / (1000 * 60));
+        const totalHours = Math.floor(totalMinutes / 60);
+        const totalDays = Math.floor(totalHours / 24);
+
+        dDays.innerText = totalDays;
+        dHours.innerText = totalHours % 24;
+        dMinutes.innerText = totalMinutes % 60;
+
+        calculateEvents(totalDays);
+        
+        if (!window.hasCheckedAnniversary) {
+            checkSpecialAnniversaries(totalDays);
+            window.hasCheckedAnniversary = true;
+        }
+    }
+
+    function calculateEvents(currentDaysCount) {
+        const now = new Date();
+        const currentYear = now.getFullYear();
+
+        // Danh sách ngày lễ và kỷ niệm đa dạng
+        let staticEvents = [
+            { name: "🎂 Sinh nhật cậu ấy (18/01)", month: 1, day: 18 },
+            { name: "🌹 Valentine Đỏ (14/02)", month: 2, day: 14 },
+            { name: "💝 Quốc tế Phụ nữ (08/03)", month: 3, day: 8 },
+            { name: "🤍 Valentine Trắng (14/03)", month: 3, day: 14 },
+            { name: "🧸 Quốc tế Thiếu nhi (01/06)", month: 6, day: 1 },
+            { name: "🏠 Ngày Gia đình VN (28/06)", month: 6, day: 28 },
+            { name: "🥣 Ngày Thất Tịch (07/07 Âm)", month: 8, day: 19 }, // Tính tương đối theo năm 2026 dương lịch
+            { name: "🎂 Sinh nhật mình (02/10)", month: 10, day: 2 },
+            { name: "💃 Ngày Phụ nữ VN (20/10)", month: 10, day: 20 },
+            { name: "🧔 Ngày Đàn ông (19/11)", month: 11, day: 19 },
+            { name: "🎄 Giáng Sinh (25/12)", month: 12, day: 25 },
+            { name: "🎆 Đêm Giao Thừa (31/12)", month: 12, day: 31 }
+        ];
+
+        let displayEvents = [];
+
+        // 1. Tính các ngày lễ cố định
+        staticEvents.forEach(ev => {
+            let evDate = new Date(currentYear, ev.month - 1, ev.day);
+            if (evDate < now && (now.getDate() !== ev.day || now.getMonth() !== ev.month - 1)) {
+                evDate.setFullYear(currentYear + 1);
+            }
+            const diffTime = evDate - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            displayEvents.push({ name: ev.name, daysLeft: diffDays });
+        });
+
+        if (startDateStr) {
+            const start = new Date(startDateStr + "T00:00:00");
+            
+            // 2. Tính ngày kỷ niệm theo THÁNG (Hiển thị mốc tháng tiếp theo)
+            for (let i = 1; i <= 240; i++) {
+                let milestoneDate = new Date(start);
+                milestoneDate.setMonth(start.getMonth() + i);
+                if (milestoneDate > now) {
+                    const diffTime = milestoneDate - now;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    if (diffDays <= 45) {
+                        displayEvents.push({ name: `💕 Kỷ niệm ${i} tháng bên nhau`, daysLeft: diffDays });
+                    }
+                    break; 
+                }
+            }
+
+            // 3. Tính ngày kỷ niệm theo NĂM (1 năm, 2 năm, 5 năm...)
+            for (let y = 1; y <= 20; y++) {
+                let milestoneYear = new Date(start);
+                milestoneYear.setFullYear(start.getFullYear() + y);
+                if (milestoneYear > now) {
+                    const diffTime = milestoneYear - now;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    if (diffDays <= 365) {
+                        displayEvents.push({ name: `💍 Đại lễ kỷ niệm ${y} năm ngày cưới/yêu`, daysLeft: diffDays });
+                    }
+                    break;
+                }
+            }
+
+            // 4. Tính các mốc NGÀY TRÒN HÀNG TRĂM (100, 200, 300... đến 2000 ngày)
+            for (let m = 100; m <= 2000; m += 100) {
+                if (m > currentDaysCount) {
+                    let mDate = new Date(start.getTime() + m * 24 * 60 * 60 * 1000);
+                    const diffTime = mDate - now;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    if (diffDays <= 90) {
+                        displayEvents.push({ name: `🎉 Cột mốc tròn ${m} ngày bên nhau`, daysLeft: diffDays });
+                    }
+                }
+            }
+        }
+
+        // Sắp xếp sự kiện nào gần nhất xếp lên đầu
+        displayEvents.sort((a, b) => a.daysLeft - b.daysLeft);
+
+        eventsList.innerHTML = '';
+        displayEvents.forEach(ev => {
+            const div = document.createElement('div');
+            div.className = 'event-item' + (ev.daysLeft <= 7 ? ' soon' : '');
+            div.innerHTML = `<span>${ev.name}</span><span>${ev.daysLeft === 0 ? 'Hôm nay! 🎉' : 'Còn ' + ev.daysLeft + ' ngày'}</span>`;
+            eventsList.appendChild(div);
+        });
+    }
+
+    function setStartDate() {
+        const input = prompt("Nhập ngày bắt đầu bên nhau (Năm-Tháng-Ngày, VD: 2026-05-18):", startDateStr);
+        if (input && input.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            startDateStr = input; localStorage.setItem('loveStartDate', startDateStr); window.hasCheckedAnniversary = false; updateLoveCounter();
+        } else if (input) { alert("Nhập sai định dạng!"); }
+    }
+
+    function updateMapUI() {
+        if (!myLoc || !loverLoc) { mapContainer.innerHTML = `<div style="text-align: center; padding-top: 200px; color: #a0aec0; font-size: 12px;">Chưa cấu hình bản đồ hành trình</div>`; return; }
+        const embedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(myLoc)}%20to%20${encodeURIComponent(loverLoc)}&output=embed&z=6`;
+        mapContainer.innerHTML = `<iframe src="${embedUrl}"></iframe>`;
+        distanceKmLabel.innerText = `📍 Tuyến đường thực tế từ [${myLoc}] đến [${loverLoc}]: ~ ${localStorage.getItem('savedKm') || "1771"} km`;
+    }
 
     function setLocations() {
-        myLoc = prompt("Nhập thành phố của bạn:", myLoc) || myLoc;
-        loverLoc = prompt("Nhập thành phố người ấy:", loverLoc) || loverLoc;
-        localStorage.setItem('myLocation', myLoc);
-        localStorage.setItem('loverLocation', loverLoc);
-        updateMap();
+        const p1 = prompt("Vị trí của bạn (VD: Tuyên Quang):", myLoc); if (p1 === null) return;
+        const p2 = prompt("Vị trí người ấy (VD: Sài Gòn):", loverLoc); if (p2 === null) return;
+        const km = prompt("Khoảng cách ước tính (km):", localStorage.getItem('savedKm') || "1771"); if (km === null) return;
+        myLoc = p1.trim(); loverLoc = p2.trim();
+        localStorage.setItem('myLocation', myLoc); localStorage.setItem('loverLocation', loverLoc); localStorage.setItem('savedKm', km.trim());
+        updateMapUI();
     }
 
-    function updateMap() {
-        // Link chuẩn của Google Maps để nhúng
-        const url = `https://www.google.com/maps/embed/v1/directions?key=YOUR_API_KEY&origin=${myLoc}&destination=${loverLoc}`;
-        document.getElementById('mapContainer').innerHTML = `<iframe src="${url}" width="100%" height="100%"></iframe>`;
+    function refreshAllWeather() {
+        labelCity1.innerText = "📍 " + city1.replace('_', ' ') + ":"; labelCity2.innerText = "📍 " + city2.replace('_', ' ') + ":";
+        frameWeather1.src = `https://wttr.in/${encodeURIComponent(city1)}?format=4&lang=vi`; frameWeather2.src = `https://wttr.in/${encodeURIComponent(city2)}?format=4&lang=vi`;
     }
 
-    // Khởi tạo
-    document.getElementById('stickyNote').value = localStorage.getItem('stickyNoteData') || "";
-    document.getElementById('countDisplay').innerText = count;
-    document.getElementById('water').style.height = (count % 100) + '%';
-    updateMap();
+    function setupWeatherCities() {
+        const c1 = prompt("Tên thành phố của bạn (Dùng dấu gạch dưới thay dấu cách, VD: Tuyen_Quang, Ha_Noi):", city1); if (c1 === null) return;
+        const c2 = prompt("Tên thành phố người ấy (VD: Ho_Chi_Minh, Da_Nang):", city2); if (c2 === null) return;
+        city1 = c1.trim(); city2 = c2.trim();
+        localStorage.setItem('weatherCity1', city1); localStorage.setItem('weatherCity2', city2);
+        refreshAllWeather();
+    }
+
+    function saveNote() { localStorage.setItem('stickyNoteData', stickyNote.value); }
+
+    function updateUI() {
+        countDisplay.innerText = count; missDisplay.innerText = missCount; historyCount.innerText = `(${historyData.length})`;
+        waterElement.style.height = Math.min(count, 100) + '%';
+        historyList.innerHTML = '';
+        historyData.slice().reverse().forEach(item => {
+            const li = document.createElement('li'); li.className = 'history-item';
+            li.innerHTML = `<div class="history-header"><span>💧 Giọt thứ ${item.id}</span><span class="history-time">${item.time}</span></div><div class="history-note">${item.note}</div>`;
+            historyList.appendChild(li);
+        });
+        stickyNote.value = localStorage.getItem('stickyNoteData') || "";
+    }
+
+    function addDrop() {
+        let reason = prompt("Lý do giọt nước rơi hôm nay...?", ""); if (reason === null) return;
+        if (reason.trim() === "") reason = "Không có lý do";
+        count++; localStorage.setItem('sadDrops', count);
+        const now = new Date();
+        const timeString = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} - ${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+        historyData.push({ id: count, time: timeString, note: reason });
+        localStorage.setItem('sadHistory', JSON.stringify(historyData));
+        updateUI();
+    }
+
+    function addMiss() {
+        missCount++; localStorage.setItem('missCount', missCount); missDisplay.innerText = missCount;
+        const heart = document.createElement('div'); heart.innerHTML = '❤️'; heart.style.position = 'fixed'; heart.style.left = Math.random() * 80 + 10 + 'vw'; heart.style.top = '100vh'; heart.style.fontSize = Math.random() * 20 + 15 + 'px'; heart.style.transition = 'transform 1.5s ease-out, opacity 1.5s-out'; heart.style.pointerEvents = 'none'; heart.style.zIndex = '999'; document.body.appendChild(heart);
+        setTimeout(() => { heart.style.transform = `translateY(-105vh) scale(1.5) rotate(${Math.random() * 60 - 30}deg)`; heart.style.opacity = '0'; }, 50);
+        setTimeout(() => heart.remove(), 1600);
+    }
+
+    function resetAll() {
+        if (confirm('Xóa hết dữ liệu để cài đặt lại từ đầu?')) {
+            localStorage.clear(); count = 0; missCount = 0; historyData = []; startDateStr = "2026-05-18"; myLoc = "Tuyên Quang"; loverLoc = "Sài Gòn"; city1 = "Tuyen_Quang"; city2 = "Ho_Chi_Minh"; window.hasCheckedAnniversary = false;
+            updateUI(); updateLoveCounter(); updateMapUI(); refreshAllWeather();
+        }
+    }
+
+    window.hasCheckedAnniversary = false;
+    updateUI(); updateLoveCounter(); updateMapUI(); refreshAllWeather();
+    setInterval(updateLoveCounter, 60000);
 </script>
 </body>
 </html>
