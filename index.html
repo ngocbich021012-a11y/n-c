@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Góc Nhỏ Của Hai Đứa v6.0</title>
+    <title> Góc Nhỏ Của Hai Đứa </title>
     <style>
         :root {
             --bg-color: #f4f7f6;
@@ -50,9 +50,12 @@
         .miss-btn { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); box-shadow: 0 4px 12px rgba(161, 196, 253, 0.4); }
         .miss-btn:hover { box-shadow: 0 6px 16px rgba(161, 196, 253, 0.6); }
         .status { font-size: 13px; font-weight: 600; color: #718096; }
-        .weather-panel { background: #f8fafc; border-radius: 12px; padding: 10px; width: 100%; box-sizing: border-box; font-size: 12px; display: flex; flex-direction: column; gap: 5px; text-align: left; }
-        .weather-title-area { display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #475569; }
-        .weather-frame-box { width: 100%; height: 70px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; background: #fff; }
+        
+        /* Cải tiến giao diện Thời tiết */
+        .weather-panel { background: #f8fafc; border-radius: 16px; padding: 12px; width: 100%; box-sizing: border-box; font-size: 12px; display: flex; flex-direction: column; gap: 8px; text-align: left; border: 1px solid #e2e8f0; }
+        .weather-title-area { display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #475569; border-bottom: 1px dashed #e2e8f0; padding-bottom: 4px; }
+        .weather-city-item { display: flex; flex-direction: column; gap: 3px; }
+        .weather-frame-box { width: 100%; height: 38px; border-radius: 8px; overflow: hidden; border: 1px solid #f1f5f9; background: #fff; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02); }
         .weather-frame-box iframe { width: 100%; height: 100%; border: none; }
 
         /* --- CỘT 2 --- */
@@ -117,12 +120,16 @@
             <div class="weather-panel">
                 <div class="weather-title-area">
                     <span>🌤️ Thời tiết 2 nơi:</span>
-                    <span style="font-size: 10px; font-weight: normal; color: #a0aec0; cursor:pointer;" onclick="setupWeatherCities()">⚙️ Đổi nơi</span>
+                    <span style="font-size: 10px; font-weight: normal; color: #3182ce; cursor:pointer;" onclick="setupWeatherCities()">⚙️ Đổi nơi</span>
                 </div>
-                <div style="font-size: 11px; font-weight: 600; color:#4a5568;" id="labelCity1">Tuyên Quang:</div>
-                <div class="weather-frame-box"><iframe id="frameWeather1" src="https://wttr.in/Tuyen_Quang?format=4&lang=vi"></iframe></div>
-                <div style="font-size: 11px; font-weight: 600; color:#4a5568;" id="labelCity2">Sài Gòn:</div>
-                <div class="weather-frame-box"><iframe id="frameWeather2" src="https://wttr.in/Ho_Chi_Minh?format=4&lang=vi"></iframe></div>
+                <div class="weather-city-item">
+                    <div style="font-size: 11px; font-weight: 600; color:#64748b;" id="labelCity1">Tuyên Quang:</div>
+                    <div class="weather-frame-box"><iframe id="frameWeather1" src="https://wttr.in/Tuyen_Quang?format=%c+%t+%C&lang=vi"></iframe></div>
+                </div>
+                <div class="weather-city-item">
+                    <div style="font-size: 11px; font-weight: 600; color:#64748b;" id="labelCity2">Sài Gòn:</div>
+                    <div class="weather-frame-box"><iframe id="frameWeather2" src="https://wttr.in/Ho_Chi_Minh?format=%c+%t+%C&lang=vi"></iframe></div>
+                </div>
             </div>
             <button class="sub-btn" style="font-size:10px; padding:3px 8px; margin-top:5px; align-self:center;" onclick="resetAll()">Xóa dữ liệu</button>
         </div>
@@ -191,29 +198,21 @@
     const frameWeather1 = document.getElementById('frameWeather1');
     const frameWeather2 = document.getElementById('frameWeather2');
 
-    // HỆ THỐNG KIỂM TRA POPUP THÔNG BÁO TỰ ĐỘNG KHÔNG SÓT NGÀY NÀO
     function checkSpecialAnniversaries(totalDays) {
         const now = new Date();
         const m = now.getMonth() + 1;
         const d = now.getDate();
 
-        // 1. Sinh nhật hai đứa
-        if (m === 10 && d === 2) { alert("🎉 Happy Birthday To You! Chúc bạn tuổi mới ngập tràn hạnh phúc, nụ cười và luôn có người ấy bên cạnh! 🎂🎁❤️"); return; }
+        if (m === 10 && d === 2) { alert("🎉 Happy Birthday To You! Chúc bạn tuổi mới ngập trạng hạnh phúc, nụ cười và luôn có người ấy bên cạnh! 🎂🎁❤️"); return; }
         if (m === 1 && d === 18) { alert("🎉 Hôm nay sinh nhật của người ấy rồi! Đừng quên gửi ngàn lời yêu thương và bất ngờ ngọt ngào nha! 🎂🎈💞"); return; }
-
-        // 2. Các mốc ngày lớn
         if (totalDays > 0 && totalDays % 100 === 0) { alert(`💖 WOW! Tròn đúng mốc ${totalDays} ngày bên nhau rồi đấy! Chúc hai đứa mãi vững bền bên nhau! 🎉✨`); return; }
-
-        // 3. Ngày kỷ niệm năm (Đầy năm)
         if (totalDays > 0 && totalDays % 365 === 0) { alert(`🌹 Chúc mừng Kỷ Niệm ${totalDays / 365} Năm Ngày Yêu Nhau! Cảm ơn vì đã luôn đồng hành cùng nhau trên mọi chặng đường! 🥂💑`); return; }
 
-        // 4. Ngày trùng hàng tháng (Kỷ niệm tháng)
         if (startDateStr) {
             const startDayNum = parseInt(startDateStr.split("-")[2]);
             if (d === startDayNum) { alert("💞 Tin nhắn ngọt ngào: Hôm nay là ngày kỷ niệm tháng yêu nhau của hai cậu đó! Hãy dành thời gian nhắn nhủ yêu thương nhé! 🥰"); return; }
         }
 
-        // 5. Các ngày lễ kỷ niệm lãng mạn trong năm
         if (m === 2 && d === 14) { alert("💞 Happy Valentine's Day! Chúc hai trái tim luôn đập cùng một nhịp điệu yêu thương ngọt ngào! 🌹"); }
         else if (m === 3 && d === 14) { alert("🤍 Happy Valentine's White Day! Ngày đáp lại lời tỏ tình dễ thương! 🍬"); }
         else if (m === 3 && d === 8) { alert("💝 Chúc một nửa thế giới xinh đẹp Quốc tế Phụ nữ thật rực rỡ và hạnh phúc! 🌸"); }
@@ -251,7 +250,6 @@
         const now = new Date();
         const currentYear = now.getFullYear();
 
-        // Danh sách ngày lễ và kỷ niệm đa dạng
         let staticEvents = [
             { name: "🎂 Sinh nhật cậu ấy (18/01)", month: 1, day: 18 },
             { name: "🌹 Valentine Đỏ (14/02)", month: 2, day: 14 },
@@ -259,7 +257,7 @@
             { name: "🤍 Valentine Trắng (14/03)", month: 3, day: 14 },
             { name: "🧸 Quốc tế Thiếu nhi (01/06)", month: 6, day: 1 },
             { name: "🏠 Ngày Gia đình VN (28/06)", month: 6, day: 28 },
-            { name: "🥣 Ngày Thất Tịch (07/07 Âm)", month: 8, day: 19 }, // Tính tương đối theo năm 2026 dương lịch
+            { name: "🥣 Ngày Thất Tịch (07/07 Âm)", month: 8, day: 19 }, 
             { name: "🎂 Sinh nhật mình (02/10)", month: 10, day: 2 },
             { name: "💃 Ngày Phụ nữ VN (20/10)", month: 10, day: 20 },
             { name: "🧔 Ngày Đàn ông (19/11)", month: 11, day: 19 },
@@ -269,7 +267,6 @@
 
         let displayEvents = [];
 
-        // 1. Tính các ngày lễ cố định
         staticEvents.forEach(ev => {
             let evDate = new Date(currentYear, ev.month - 1, ev.day);
             if (evDate < now && (now.getDate() !== ev.day || now.getMonth() !== ev.month - 1)) {
@@ -283,7 +280,6 @@
         if (startDateStr) {
             const start = new Date(startDateStr + "T00:00:00");
             
-            // 2. Tính ngày kỷ niệm theo THÁNG (Hiển thị mốc tháng tiếp theo)
             for (let i = 1; i <= 240; i++) {
                 let milestoneDate = new Date(start);
                 milestoneDate.setMonth(start.getMonth() + i);
@@ -297,7 +293,6 @@
                 }
             }
 
-            // 3. Tính ngày kỷ niệm theo NĂM (1 năm, 2 năm, 5 năm...)
             for (let y = 1; y <= 20; y++) {
                 let milestoneYear = new Date(start);
                 milestoneYear.setFullYear(start.getFullYear() + y);
@@ -305,13 +300,13 @@
                     const diffTime = milestoneYear - now;
                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                     if (diffDays <= 365) {
-                        displayEvents.push({ name: `💍 Đại lễ kỷ niệm ${y} năm ngày cưới/yêu`, daysLeft: diffDays });
+                        // ĐÃ SỬA THÀNH "ngày gặp nhau" theo yêu cầu của bạn ở đây:
+                        displayEvents.push({ name: `💍 Đại lễ kỷ niệm ${y} năm ngày gặp nhau`, daysLeft: diffDays });
                     }
                     break;
                 }
             }
 
-            // 4. Tính các mốc NGÀY TRÒN HÀNG TRĂM (100, 200, 300... đến 2000 ngày)
             for (let m = 100; m <= 2000; m += 100) {
                 if (m > currentDaysCount) {
                     let mDate = new Date(start.getTime() + m * 24 * 60 * 60 * 1000);
@@ -324,7 +319,6 @@
             }
         }
 
-        // Sắp xếp sự kiện nào gần nhất xếp lên đầu
         displayEvents.sort((a, b) => a.daysLeft - b.daysLeft);
 
         eventsList.innerHTML = '';
@@ -361,7 +355,9 @@
 
     function refreshAllWeather() {
         labelCity1.innerText = "📍 " + city1.replace('_', ' ') + ":"; labelCity2.innerText = "📍 " + city2.replace('_', ' ') + ":";
-        frameWeather1.src = `https://wttr.in/${encodeURIComponent(city1)}?format=4&lang=vi`; frameWeather2.src = `https://wttr.in/${encodeURIComponent(city2)}?format=4&lang=vi`;
+        // Định dạng thời tiết tinh gọn, bỏ text thừa từ wttr.in để giữ tính tối giản
+        frameWeather1.src = `https://wttr.in/${encodeURIComponent(city1)}?format=%c+%t+%C&lang=vi`; 
+        frameWeather2.src = `https://wttr.in/${encodeURIComponent(city2)}?format=%c+%t+%C&lang=vi`;
     }
 
     function setupWeatherCities() {
@@ -399,7 +395,10 @@
 
     function addMiss() {
         missCount++; localStorage.setItem('missCount', missCount); missDisplay.innerText = missCount;
-        const heart = document.createElement('div'); heart.innerHTML = '❤️'; heart.style.position = 'fixed'; heart.style.left = Math.random() * 80 + 10 + 'vw'; heart.style.top = '100vh'; heart.style.fontSize = Math.random() * 20 + 15 + 'px'; heart.style.transition = 'transform 1.5s ease-out, opacity 1.5s-out'; heart.style.pointerEvents = 'none'; heart.style.zIndex = '999'; document.body.appendChild(heart);
+        const heart = document.createElement('div'); heart.innerHTML = '❤️'; heart.style.position = 'fixed'; heart.style.left = Math.random() * 80 + 10 + 'vw'; heart.style.top = '100vh'; heart.style.fontSize = Math.random() * 20 + 15 + 'px'; 
+        // Sửa lỗi chính tả animation ở đây giúp tim bay mượt mà:
+        heart.style.transition = 'transform 1.5s ease-out, opacity 1.5s ease-out'; 
+        heart.style.pointerEvents = 'none'; heart.style.zIndex = '999'; document.body.appendChild(heart);
         setTimeout(() => { heart.style.transform = `translateY(-105vh) scale(1.5) rotate(${Math.random() * 60 - 30}deg)`; heart.style.opacity = '0'; }, 50);
         setTimeout(() => heart.remove(), 1600);
     }
